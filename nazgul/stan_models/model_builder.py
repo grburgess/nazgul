@@ -1,4 +1,6 @@
-from .stan_builder import DataBlock, ParametersBlock, TransDataBlock, ModelBlock, TransParametersBlock, StanGenerator, FunctionsBlock
+from .stan_builder import (DataBlock, FunctionsBlock, ModelBlock,
+                           ParametersBlock, StanGenerator, TransDataBlock,
+                           TransParametersBlock)
 
 
 class Nazgul(object):
@@ -9,46 +11,63 @@ class Nazgul(object):
         self._earth_occultation = earth_occultation
         self._angular_dependence = angular_dependence
 
-
     def _build_code(self):
-
 
         self._functions_block = FunctionsBlock()
         self._functions_block.add_include("functions.stan")
 
-
-        self._data_block = DataBlock(data_size"N_detectors")
-        self._data_block.add_vector_data(name="N_time_bins",stan_type="int")
+        self._data_block = DataBlock(data_size="N_detectors")
+        self._data_block.add_vector_data(name="N_time_bins", stan_type="int")
         self._data_block.add_data(name="max_N_time_bins" stan_type="int")
-        self._data_block.add_vector_data(name="counts",stan_type="int", size="max_N_time_bins", n_vectors="N_detectors")
+        self._data_block.add_vector_data(name="counts", stan_type="int", size="max_N_time_bins", n_vectors="N_detectors")self._data_block.add_vector_data(name="time", stan_type="vector", size="max_N_time_bins", n_vectors="N_detectors")self._data_block.add_vector_data(name="exposure", stan_type="vector", size="max_N_time_bins", n_vectors="N_detectors")
+        self._data_block.add_vector_data(
+            name="sc_pos", stan_type="vector", size="3", n_vectors="N_detectors")
+        self._data_block.add_vector_data(
+            name="sc_pointing_norm", stan_type="vector", size="3", n_vectors="N_detectors")
+        self._data_block.add_data(name="k" stan_type="int")
+        self._data_block.add_vector_data(
+            name="grainsize", stan_type="int", size="N_detectors")
+
+        self._transformed_data_block = TransDataBlock()
+
+        self._transformed_data_block.add_data(name="inv_sqrt_k", stan_type="real")
+
+        self._transformed_data_block.add_vector_data(name="horizon_angle", stan_type="vector", size="N_detectors")
+
+        self._transformed_data_block.add_vector_data(name="sc_pos_norm", stan_type="vector", size="3", n_vectors="N_detectors")
+
+        self._transformed_data_block.add_data(name="max_range", stan_type="real")
+
+        self._transformed_data_block.add_vector_data(name="maxs", stan_type="vector", size="N_detectors")
+
+        self._transformed_data_block.add_vector_data(name="mins", stan_type="vector", size="N_detectors")
+
+        self._transformed_data_block.insert_code("for (n in 1:N_detectors){")
+        self._transformed_data_block.insert_code("\tmaxs[n] = max(time[n]);")
+        self._transformed_data_block.insert_code("\t\tmins[n] = min(time[n]);")
+        self._transformed_data_block.insert_code("}")
+
+        self._transformed_data_block.insert_code("max_range = max(maxs) - min(mins);")
+        self._transformed_data_block.insert_code("for (n in 1:N_detectors) {")
+        self._transformed_data_block.insert_code("\t\thorizon_angle[n] = calculate_horizon_angle(sc_pos[n]);")
+        self._transformed_data_block.insert_code("\tsc_pos_norm[n] = norm_vector(sc_pos[n]);")
+        self._transformed_data_block.insert_code("}")
+        self._transformed_data_block.insert_code("inv_sqrt_k = inv_sqrt(k);")
+        
+        # self._transformed_data_block.insert_code("")
+        # self._transformed_data_block.insert_code("")
+
+
+        self._parameters_block = ParametersBlock()
+        self._parameters_block.add_vector_data(name="beta1", stan_type="vector")
         
         
-
-
-_functions_block = "functions {\n"
-_functions_block += "#include functions.stan\n"
-_functions_block += "}\n"
-
-_data_block ="\n"
-_data_block += "data {\n"
-_data_block += "\tint N_detectors; // number of detectors used\n"
-_data_block += "\tint N_time_bins[N_detectors]; // the number of time bins in each detector\n"
-_data_block += "\tint max_N_time_bins; // the max number of time bins\n"
-_data_block += "\tint counts[N_detectors, max_N_time_bins]; // matrix of counts per detector\n"
-_data_block += "\tvector[max_N_time_bins] time[N_detectors]; // matrix of time bin midpoints per detector\n"
-_data_block += "\tvector[max_N_time_bins] exposure[N_detectors]; // matrix of exposures per detector\n"
-_data_block += "\tvector[3] sc_pos[N_detectors]; // the 3D vector for each space craft\n"
-  data_block += "vector[3] sc_pointing_norm[N_detectors]; // the 3D vector for each space craft\n"
-_data_block += "\tint<lower=1> k; // number of FFs\n"
-_data_block += "\tint grainsize[N_detectors];\n"
-_data_block += "}\n"
-
 
 
 _transformed_data_block = "transformed data {\n"
 
 _transformed_data_block += "\tvector[max_N_time_bins] log_exposure[N_detectors] = log(exposure);\n"
-  
+
 _transformed_data_block += "\treal inv_sqrt_k = inv_sqrt(k);\n"
 _transformed_data_block += "\tvector[N_detectors] horizon_angle;\n"
 _transformed_data_block += "\tvector[3] sc_pos_norm[N_detectors];\n"
@@ -74,8 +93,6 @@ _parameters_block += "\tvector[k] beta1; // the amplitude along the cos basis\n"
 _parameters_block += "\tvector[k] beta2; // the amplitude along the sin basis\n"
 
 _parameters_block += "\trow_vector[k] omega_var[2]; // this weird MC integration thing.\n"
-  
-
 
 
 _parameters_block += "\tvector[N_detectors]  log_bkg;\n"
@@ -87,14 +104,10 @@ _parameters_block += "\t//ordered[2] log_bw;\n"
 
 _parameters_block += "\treal<lower=0, upper=1> range1_raw;\n"
 _parameters_block += "\treal<lower=0, upper=range1_raw> range2_raw;\n"
-  
+
 
 _parameters_block += "\tunit_vector[3] grb_xyz; // GRB cartesian location\n"
 _parameters_block += "}\n"
 
 
 _parameters_block += "\tvector[N_detectors-1] log_amplitude; // independent amplitude1 of LC 1; probably do not need right now...\n"
-
-
-
-

@@ -16,13 +16,15 @@ parameters {
 
 transformed parameters {
 #include standard_transformed_parameters.stan
+#include earth_occ_parameters.stan
 #include standard_transformed_parameter_ops.stan
+#include earth_occ_parameter_ops.stan
 }
 
 model {
 #include standard_model_dec.stan
 #include standard_priors.stan  
-#include standard_amp.stan
+#include earth_occ_amp.stan
 #include standard_likelihood.stan
   
  

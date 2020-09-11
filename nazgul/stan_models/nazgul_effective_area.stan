@@ -16,16 +16,17 @@ parameters {
 
 transformed parameters {
 #include standard_transformed_parameters.stan
+#include effective_area_parameters.stan
 #include standard_transformed_parameter_ops.stan
+#include effective_area_parameter_ops.stan
 }
 
 model {
 #include standard_model_dec.stan
-#include standard_priors.stan  
-#include standard_amp.stan
+#include standard_priors.stan
+#include effective_area_amp.stan
 #include standard_likelihood.stan
   
- 
 }
 
 generated quantities {
