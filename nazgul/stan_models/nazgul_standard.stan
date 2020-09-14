@@ -7,16 +7,20 @@ data {
 }
 
 transformed data {
-#include transformed_data.stan  
+#include transform_data.stan
+#include standard_trans_data_ops.stan
 }
 
 parameters {
 #include standard_parameters.stan
+#include amplitude_parameters.stan
 }
 
 transformed parameters {
 #include standard_transformed_parameters.stan
+#include amplitude_transformed_parameters.stan
 #include standard_transformed_parameter_ops.stan
+
 }
 
 model {

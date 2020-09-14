@@ -1,6 +1,6 @@
 
 vector[N_detectors] bkg = exp(log_bkg);
-vector[N_detectors-1] amplitude = exp(log_amplitude);
+
 
 vector[2] scale = raw_scale * inv_sqrt(k);
 

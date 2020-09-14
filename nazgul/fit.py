@@ -1,27 +1,27 @@
 import arviz as av
-import numpy as np
-import numba as nb
-import matplotlib.pyplot as plt
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
 import astropy.units as u
-
-import ligo.skymap.plot
-from ligo.skymap.plot import reticle
-from ligo.skymap.kde import Clustered2DSkyKDE
 import astropy_healpix as ah
+import ligo.skymap.plot
+import matplotlib.pyplot as plt
+import numba as nb
+import numpy as np
 from astropy.wcs.utils import skycoord_to_pixel
+from ligo.skymap.kde import Clustered2DSkyKDE
+from ligo.skymap.plot import reticle
+from matplotlib.patches import PathPatch
+from matplotlib.path import Path
 from mocpy import MOC
 
+from pyipn.io.plotting.projection import create_skw_dict
 from pyipn.rff import RFF, RFF_multiscale
-from .utils.timing import compute_annulus_from_time_delay
-
-from .io.plotting.projection import create_skw_dict
-from .universe import Universe
+from pyipn.universe import Universe
+from pyipn.utils.timing import compute_annulus_from_time_delay
 
 
 class Fit(object):
-    def __init__(self, *inference_data, universe_save=None, npix=2 ** 5, fast_open=False):
+    def __init__(
+        self, *inference_data, universe_save=None, npix=2 ** 5, fast_open=False
+    ):
         """FIXME! briefly describe function
 
         :param inference_data:
@@ -58,10 +58,6 @@ class Fit(object):
 
             self._do_contour = False
 
-
-    
-
-        
         self._beta1 = self._posterior.posterior.beta1.stack(
             sample=("chain", "draw")
         ).values
@@ -192,7 +188,7 @@ class Fit(object):
         elif self._do_contour:
 
             self._build_moc_map()
-            
+
     def _build_moc_map(self):
 
         pts = np.column_stack((self._grb_phi, self._grb_theta))
@@ -448,7 +444,9 @@ class Fit(object):
 
         return fig
 
-    def plot_light_curve_fit(self, detector, tstart, tstop, dt=0.2, thin=1, color='r', **kwargs):
+    def plot_light_curve_fit(
+        self, detector, tstart, tstop, dt=0.2, thin=1, color="r", **kwargs
+    ):
 
         self._detector_check(detector)
         assert self._has_universe
@@ -485,7 +483,16 @@ class Fit(object):
 
         return fig
 
-    def plot_light_curve_ppcs(self, detector, tstart, tstop, dt=0.2, levels=[99, 95, 68], colors=["r", "g", "b"], **kwargs):
+    def plot_light_curve_ppcs(
+        self,
+        detector,
+        tstart,
+        tstop,
+        dt=0.2,
+        levels=[99, 95, 68],
+        colors=["r", "g", "b"],
+        **kwargs
+    ):
 
         self._detector_check(detector)
         assert self._has_universe
@@ -519,19 +526,27 @@ class Fit(object):
 
         for level in levels:
 
-            tmp_low = np.percentile(ppcs / exposure, 50. - level / 2., axis=0)
-            tmp_high = np.percentile(ppcs / exposure, 50. + level / 2., axis=0)
+            tmp_low = np.percentile(
+                ppcs / exposure, 50.0 - level / 2.0, axis=0)
+            tmp_high = np.percentile(
+                ppcs / exposure, 50.0 + level / 2.0, axis=0)
 
             ppc_low.append(tmp_low)
             ppc_high.append(tmp_high)
 
-        #colors = [light,mid,dark]
+        # colors = [light,mid,dark]
 
         for j, (lo, hi) in enumerate(zip(ppc_low, ppc_high)):
 
             for i in range(len(edges) - 1):
-                ax.fill_between([edges[i], edges[i + 1]],
-                                lo[i], hi[i], fc=colors[j], ec="none", lw=0)
+                ax.fill_between(
+                    [edges[i], edges[i + 1]],
+                    lo[i],
+                    hi[i],
+                    fc=colors[j],
+                    ec="none",
+                    lw=0,
+                )
 
         ax.scatter(mid_points, rate, **kwargs)
 
