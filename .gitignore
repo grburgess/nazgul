@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+*.hpp
+/nazgul/stan_models/nazgul_effective_area
+/nazgul/stan_models/nazgul_standard
+/logo.key
