@@ -5,6 +5,7 @@ python:
 install:
 - pip install --upgrade cython coverage pytest pytest-cov  codecov astropy
 - python setup.py install
+env: NUMBA_DISABLE_JIT=1
 script:
 - python -m pytest -vv --cov=nazgul/
 deploy:
