@@ -8,7 +8,7 @@ data {
 
 transformed data {
 #include transform_data.stan
-#include known_effective_area_transformed_data.stan
+
 #include standard_trans_data_ops.stan
 }
 
@@ -25,6 +25,7 @@ transformed parameters {
 
 model {
 #include standard_model_dec.stan
+#include known_effective_area_model.stan
 #include standard_priors.stan  
 #include standard_likelihood.stan
    
