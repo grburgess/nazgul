@@ -1,6 +1,7 @@
 language: python
 python:
 - '3.7'
+- '3.8'
 install:
 - pip install --upgrade cython coverage pytest pytest-cov  codecov astropy
 - python setup.py install
@@ -8,7 +9,7 @@ script:
 - python -m pytest -vv --cov=nazgul/
 deploy:
   provider: pypi
-  user:" __token__"
+  user: "__token__"
   on:
     tags: true
   distributions: sdist bdist_wheel
