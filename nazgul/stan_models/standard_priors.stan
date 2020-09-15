@@ -13,5 +13,5 @@ omega_var[2] ~ std_normal();
 
 
 log_bkg ~ normal(log(500), log(100));  
-log_amplitude ~ std_normal();
+
 

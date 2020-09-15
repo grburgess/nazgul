@@ -25,6 +25,7 @@ transformed parameters {
 model {
 #include standard_model_dec.stan
 #include standard_priors.stan  
+#include amplitude_priors.stan
 #include earth_occ_amp.stan
 #include standard_likelihood.stan
   

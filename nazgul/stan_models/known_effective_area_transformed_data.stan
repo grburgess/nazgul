@@ -1,1 +1,1 @@
-vector[N_detectors] amplitude = effective_area;
+vector[N_detectors] all_amplitude = effective_area;
