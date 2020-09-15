@@ -8,13 +8,11 @@ data {
 
 transformed data {
 #include transform_data.stan
-
 #include standard_trans_data_ops.stan
 }
 
 parameters {
 #include standard_parameters.stan
-#include amplitude_parameters.stan
 }
 
 transformed parameters {
