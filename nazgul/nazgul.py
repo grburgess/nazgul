@@ -23,7 +23,7 @@ class Nazgul(object):
 
             else:
 
-                pass
+                self._model = get_stan_model("nazgul_known_effective_area.stan")
 
         elif earth_occultation:
 

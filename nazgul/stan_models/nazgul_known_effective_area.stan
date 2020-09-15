@@ -8,6 +8,7 @@ data {
 
 transformed data {
 #include transform_data.stan
+#include known_effective_area_transformed_data.stan
 #include standard_trans_data_ops.stan
 }
 
@@ -18,7 +19,6 @@ parameters {
 
 transformed parameters {
 #include standard_transformed_parameters.stan
-#include amplitude_transformed_parameters.stan
 #include standard_transformed_parameter_ops.stan
 
 }
@@ -26,7 +26,6 @@ transformed parameters {
 model {
 #include standard_model_dec.stan
 #include standard_priors.stan  
-#include standard_amp.stan
 #include standard_likelihood.stan
    
 }

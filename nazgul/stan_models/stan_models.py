@@ -11,6 +11,7 @@ _available_models = [
     "nazgul_ea_earth.stan",
     "nazgul_effective_area.stan",
     "nazgul_earth_occ.stan",
+    "nazgul_known_effective_area.stan"
 ]
 
 
