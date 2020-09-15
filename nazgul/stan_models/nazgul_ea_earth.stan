@@ -7,15 +7,20 @@ data {
 }
 
 transformed data {
-#include transformed_data.stan  
+#include transform_data.stan  
+#include standard_trans_data_ops.stan
+#include earth_occ_transform_data.stan
+#include earth_occ_transform_data_ops.stan
 }
 
 parameters {
 #include standard_parameters.stan
+#include amplitude_parameters.stan
 }
 
 transformed parameters {
 #include standard_transformed_parameters.stan
+#include amplitude_transformed_parameters.stan
 #include earth_occ_parameters.stan
 #include effective_area_parameters.stan
 #include standard_transformed_parameter_ops.stan
@@ -26,7 +31,7 @@ model {
 #include standard_model_dec.stan
 #include standard_priors.stan  
 #include amplitude_priors.stan
-#include earth_occ_amp.stan
+#include ea_earth_amp.stan
 #include standard_likelihood.stan
   
  
