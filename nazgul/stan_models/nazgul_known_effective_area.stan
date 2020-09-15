@@ -23,8 +23,8 @@ transformed parameters {
 
 model {
 #include standard_model_dec.stan
-#include known_effective_area_model.stan
 #include standard_priors.stan  
+#include known_effective_area_model.stan
 #include standard_likelihood.stan
    
 }
