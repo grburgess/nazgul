@@ -1,0 +1,17 @@
+language: python
+python:
+- '3.7'
+install:
+- pip install --upgrade cython coverage pytest pytest-cov  codecov astropy
+- python setup.py install
+script:
+- python -m pytest -vv --cov=nazgul/
+deploy:
+  provider: pypi
+  user:" __token__"
+  on:
+    tags: true
+  distributions: sdist bdist_wheel
+  skip_existing: true
+  password:
+    secure: ptaCrAJAWaPcwFc33fASoQldIwJo0WLST4Yp6EG+yZQRiDi6jZrJGdfF7ym6+IsWbjrIdSAb1pNXSZmulysuMG3QiUnpBKDvD+/bWDXoGnvjF0bq1vNJ3T0aet5vKyS3718AZChMF88TuqciMk6hHFE1MUN8LFtjANUq+M0VeDp7l9WQHPzy41qJnbn809A4Ojv0sFPExbkXv+0jewIISJHT1fe/vt7D71dc24qtHYMWHNOFKnHEtLkKGs1ksJ1KlWolgH2FuF6k6Ryzcn+N5wHBZLOyD+/BKfTtArYBAnN4hiXEGI8oBYr1cFuAevDoRg8yCq+YzS5o9ZxpbymtGGdbqCiyhdACdq0f5+NBH49AdDhmZoN2qDAEcZwmXv4Y3njjODEarTDFxgGipyQ92udaI2OnaCe8mLF1/l/s31CLjmtycol3jIr1Cae1+873gw2K/9tHoydlBKvgaXmJYv++X0DxLl0iJXfbhTKFNbSssIPfxwFKK1F/LqXMAHa2ZGMb5KVMOORsu9XZ2jBTzmyPTnvRMWqNMHznHjrQo3Xb+oKLCPaC6uAtcYHDUWExDWdJ0NIQ0DZPRJh5XuYLG/+1GYqQ9ek56ltBLhyrZ/aRdNj7ZcgdTf81R3vhwEiuPdf10/dhvMlqXNC2lRqFXKdzPB9WjI+xtXfSOjng8rw=
