@@ -26,6 +26,18 @@ The heriarchical model is shown below and details can be found in [link here]().
 
 The sister program to simulate time-delayed light curves is [pyIPN](https://github.com/grburgess/pyipn) and can be used to generate time-delayed light curves for algorithm testing. 
 
+
+---
+
+This work is a joint effort by:
+
+* J. Michael Burgess
+* Ewan Cameron
+* Dmitry Svinkin
+
+---
+
+
 ## Installation
 ```bash
 pip install nazgul
