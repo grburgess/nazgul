@@ -18,7 +18,7 @@ The idea is that satellites throughout the Sol system observe gamma-ray bursts a
 ![alt text](https://raw.githubusercontent.com/grburgess/nazgul/master/idea.png)
 
 
-The heriarchical model is shown below and details can be found in [link here](). If you find the method and/or code useful in your research we ask that you please cite the paper. 
+The heriarchical model is shown below and details can be found in [here](https://arxiv.org/abs/2009.08350). If you find the method and/or code useful in your research we ask that you please cite the paper. 
 
 ![alt text](https://raw.githubusercontent.com/grburgess/nazgul/master/model.png)
 
