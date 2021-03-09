@@ -16,7 +16,7 @@ real partial_log_like_bw_multi_scale(int[] counts_slice, int start, int end, vec
   expected_counts = exposure[start:end] .* (exp(expected_counts_log) * amplitude + bkg);
 
 
-  return poisson_propto_lpmf(counts_slice | expected_counts);
+  return poisson_lupmf(counts_slice | expected_counts);
 
 }
 
@@ -30,7 +30,7 @@ real partial_log_like_bw_multi_scale_fast(int[] counts_slice, int start, int end
   matrix [N,k] tw2 = time_slice * omega2;
 
 
-  return poisson_propto_lpmf(counts_slice | exposure[start:end] .* (exp(((scale1 * cos(tw1) + scale2 * cos(tw2)  ) * beta1) + ((scale1 * sin(tw1) + scale2 * sin(tw2)  ) * beta2)) * amplitude + bkg));
+  return poisson_lupmf(counts_slice | exposure[start:end] .* (exp(((scale1 * cos(tw1) + scale2 * cos(tw2)  ) * beta1) + ((scale1 * sin(tw1) + scale2 * sin(tw2)  ) * beta2)) * amplitude + bkg));
 
 }
 
